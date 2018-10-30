@@ -5,6 +5,18 @@ import AppComponent from 'flow-app-component';
 import './css/theme/default.css';
 
 class CheckboxComponent extends AppComponent {
+  static properties = {
+    iconUrl: '/assets/images/checkbox-component.png',
+    name: 'Checkbox',
+    type: 'ui-component',
+    componentType: 'checkbox',
+    category: 'Inputs',
+    parent: null,
+    showOnComponentsPanel: true,
+    isValuable: true,
+    allowsChildren: false
+  };
+
   constructor() {
     super();
     const newState = {
@@ -28,15 +40,8 @@ class CheckboxComponent extends AppComponent {
           ],
         },
       ],
-      iconUrl: '/assets/images/checkbox-component.png',
-      name: 'Checkbox',
-      type: 'ui-component',
-      componentType: 'checkbox',
-      category: 'Inputs',
-      parent: null,
-      showOnComponentsPanel: true,
-      isValuable: true,
-      allowsChildren: false,
+
+      ...CheckboxComponent.properties
     };
 
     this.state = Object.assign(this.state, newState); // merge two states together, and dont lose any parent state properties.
