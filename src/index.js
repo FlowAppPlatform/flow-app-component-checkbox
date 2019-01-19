@@ -8,6 +8,9 @@ class CheckboxComponent extends AppComponent {
   constructor() {
     super();
     const newState = {
+    interactiveMode: false,
+    readOnly: false,
+    checkInputValue: false,
       properties: [
         {
           categoryName: 'General',
@@ -41,17 +44,39 @@ class CheckboxComponent extends AppComponent {
 
     this.state = Object.assign(this.state, newState); // merge two states together, and dont lose any parent state properties.
   }
+    componentDidMount(){
+        const interactiveMode = !(this.props.propertyData.interactiveMode === undefined);
+        this.setState({interactiveMode, readOnly: interactiveMode});
+    }
+
+    handleClick = (e) => {
+        if(this.state.readOnly){
+            e.preventDefault();
+        }else {
+             this.setState(prevState => ({checkInputValue: !prevState.checkInputValue}))
+        }
+    }
+    handleDbClick = (e) => {
+        if(this.state.interactiveMode){
+            this.setState(prevState => ({readOnly: !prevState.readOnly}))
+        }
+    }
 
   renderContent() {
     return (
       <div className="checkfix space-1">
         <label htmlFor="checkbox" className="check-label">
           <input
+            style={{cursor: 'pointer'}}
             type="checkbox"
             name="checkbox"
             id="checkbox"
-            value="true"
+            readOnly
+            value={this.state.checkInputValue}
+            checked={this.state.checkInputValue}
             className="check-input"
+            onDoubleClick={this.handleDbClick}
+            onClick={this.handleClick}
           />
           Checkbox
         </label>
