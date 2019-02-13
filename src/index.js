@@ -51,15 +51,24 @@ class CheckboxComponent extends AppComponent {
 
     handleClick = (e) => {
         if(this.state.readOnly){
-            e.preventDefault();
+          e.preventDefault();
         }else {
-             this.setState(prevState => ({checkInputValue: !prevState.checkInputValue}))
+          this.setState(prevState => ({checkInputValue: !prevState.checkInputValue}))
+          
+          const graphId = this.getPropertyData('event');
+          this.getElementProps().onEvent(graphId);
         }
     }
+
     handleDbClick = (e) => {
         if(this.state.interactiveMode){
             this.setState(prevState => ({readOnly: !prevState.readOnly}))
         }
+    }
+
+    triggerGraphEvent = () => {
+      const graphId = this.getPropertyData('event');
+      this.getElementProps().onEvent(graphId)
     }
 
   renderContent() {
@@ -75,6 +84,7 @@ class CheckboxComponent extends AppComponent {
             value={this.state.checkInputValue}
             checked={this.state.checkInputValue}
             className="check-input"
+            onMouseOver={this.triggerGraphEvent}
             onDoubleClick={this.handleDbClick}
             onClick={this.handleClick}
           />
