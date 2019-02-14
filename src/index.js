@@ -22,8 +22,22 @@ class CheckboxComponent extends AppComponent {
           categoryDescription: 'Events for the checkbox',
           properties: [
             {
-              id: 'event',
-              name: 'Events',
+              id: 'load',
+              name: 'Load Event',
+              type: 'graph',
+              options: {},
+              data: null,
+            },
+            {
+              id: 'click',
+              name: 'Click Event',
+              type: 'graph',
+              options: {},
+              data: null,
+            },
+            {
+              id: 'hover',
+              name: 'Hover Event',
               type: 'graph',
               options: {},
               data: null,
@@ -47,6 +61,7 @@ class CheckboxComponent extends AppComponent {
     componentDidMount(){
         const interactiveMode = !(this.props.propertyData.interactiveMode === undefined);
         this.setState({interactiveMode, readOnly: interactiveMode});
+        this.triggerGraphEvent('load')
     }
 
     handleClick = (e) => {
@@ -55,8 +70,7 @@ class CheckboxComponent extends AppComponent {
         }else {
           this.setState(prevState => ({checkInputValue: !prevState.checkInputValue}))
           
-          const graphId = this.getPropertyData('event');
-          this.getElementProps().onEvent(graphId);
+          this.triggerGraphEvent('click');
         }
     }
 
@@ -66,8 +80,8 @@ class CheckboxComponent extends AppComponent {
         }
     }
 
-    triggerGraphEvent = () => {
-      const graphId = this.getPropertyData('event');
+    triggerGraphEvent = (eventId) => {
+      const graphId = this.getPropertyData(eventId);
       this.getElementProps().onEvent(graphId)
     }
 
@@ -84,7 +98,7 @@ class CheckboxComponent extends AppComponent {
             value={this.state.checkInputValue}
             checked={this.state.checkInputValue}
             className="check-input"
-            onMouseOver={this.triggerGraphEvent}
+            onMouseOver={() => this.triggerGraphEvent('hover')}
             onDoubleClick={this.handleDbClick}
             onClick={this.handleClick}
           />
