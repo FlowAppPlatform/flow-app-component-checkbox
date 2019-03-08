@@ -4,6 +4,14 @@ import AppComponent from 'flow-app-component';
 
 import './css/theme/default.css';
 
+// Programmatically generated styles
+import {
+  alignContainer,
+  alignVertical,
+  containerWidth,
+  displayType
+} from './style';
+
 class CheckboxComponent extends AppComponent {
   constructor() {
     super();
@@ -15,7 +23,74 @@ class CheckboxComponent extends AppComponent {
         {
           categoryName: 'General',
           categoryDescription: 'Basic settings for the checkbox',
-          properties: [],
+          properties: [
+            {
+              id: 'label',
+              name: 'Title',
+              type: 'text',
+              options: {},
+              data: null,
+            },
+          ],
+        },
+        {
+          categoryName: 'Style',
+          categoryDescription: 'Change style of the checkbox component',
+          properties: [
+            {
+              id: 'align-container',
+              name: 'Align Container',
+              type: 'position', 
+              options: ['left', 'center', 'right'],
+              data: null,
+            },
+            {
+              id: 'container-width',
+              name: 'Width',
+              type: 'dropdown',
+              options: {
+                options: [
+                  { label: '10%', value: 'ten' },
+                  { label: '15%', value: 'fifteen' },
+                  { label: '20%', value: 'twenty' },
+                  { label: '30%', value: 'thirty'},
+                  { label: '40%', value: 'forty' },
+                  { label: '50%', value: 'fifty' },
+                  { label: '60%', value: 'sixty'},
+                  { label: '70%', value: 'seventy' },
+                  { label: '80%', value: 'eighty' },
+                  { label: '90%', value: 'ninety'},
+                  { label: '100%', value: 'full-page'}
+                ]
+              },
+              data: null,
+            },
+            {
+              id: 'display-type',
+              name: 'Component Orientation',
+              type: 'dropdown',
+              options: {
+                options: [
+                  { label: 'Horizontal', value: 'inline-block' },
+                  { label: 'Vertical', value: 'block' },
+                ]
+              },
+              data: null,
+            },
+            {
+              id: 'vertical-align',
+              name: 'Vertical Align',
+              type: 'dropdown',
+              options: {
+                options: [
+                  { label: 'Top', value: 'top' },
+                  { label: 'Middle', value: 'middle' },
+                  { label: 'Bottom', value: 'bottom' },
+                ]
+              },
+              data: null
+            },
+          ],
         },
         {
           categoryName: 'Events',
@@ -82,12 +157,31 @@ class CheckboxComponent extends AppComponent {
 
     triggerGraphEvent = (eventId) => {
       const graphId = this.getPropertyData(eventId);
-      this.getElementProps().onEvent(graphId)
+      if (typeof this.getElementProps.onEvent === 'function') {
+        this.getElementProps().onEvent(graphId);
+      }
     }
 
   renderContent() {
+    const label = this.getPropertyData('label') || 'Checkbox';
+    const elemProps = this.getElementProps();
+    const defaultDisplay = { display: 'block' }
+    const defaultWidth = { width: '100%' };
+    const defaultVerticalAlign = { verticalAlign: 'top' }
+
+    elemProps.style = Object.assign(this.getDefaultStyle() || {}, {
+      ...this.getPropertyData('align-container') 
+        && alignContainer(this.getPropertyData('align-container')),
+      ...this.getPropertyData('container-width')
+        && containerWidth(this.getPropertyData('container-width').value) || defaultWidth,
+      ...this.getPropertyData('display-type')
+        && displayType(this.getPropertyData('display-type').value) || defaultDisplay,
+      ...this.getPropertyData('vertical-align')
+        && alignVertical(this.getPropertyData('vertical-align').value) || defaultVerticalAlign,
+    });
+
     return (
-      <div className="checkfix space-1">
+      <div style={elemProps.style} className="checkfix space-1">
         <label htmlFor="checkbox" className="check-label">
           <input
             style={{cursor: 'pointer'}}
@@ -102,7 +196,7 @@ class CheckboxComponent extends AppComponent {
             onDoubleClick={this.handleDbClick}
             onClick={this.handleClick}
           />
-          Checkbox
+          {label}
         </label>
       </div>
     );
