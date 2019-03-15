@@ -66,18 +66,6 @@ class CheckboxComponent extends AppComponent {
               data: null,
             },
             {
-              id: 'display-type',
-              name: 'Component Orientation',
-              type: 'dropdown',
-              options: {
-                options: [
-                  { label: 'Horizontal', value: 'inline-block' },
-                  { label: 'Vertical', value: 'block' },
-                ]
-              },
-              data: null,
-            },
-            {
               id: 'vertical-align',
               name: 'Vertical Align',
               type: 'dropdown',
@@ -165,7 +153,6 @@ class CheckboxComponent extends AppComponent {
   renderContent() {
     const label = this.getPropertyData('label') || 'Checkbox';
     const elemProps = this.getElementProps();
-    const defaultDisplay = { display: 'block' }
     const defaultWidth = { width: '100%' };
     const defaultVerticalAlign = { verticalAlign: 'top' }
 
@@ -174,8 +161,6 @@ class CheckboxComponent extends AppComponent {
         && alignContainer(this.getPropertyData('align-container')),
       ...this.getPropertyData('container-width')
         && containerWidth(this.getPropertyData('container-width').value) || defaultWidth,
-      ...this.getPropertyData('display-type')
-        && displayType(this.getPropertyData('display-type').value) || defaultDisplay,
       ...this.getPropertyData('vertical-align')
         && alignVertical(this.getPropertyData('vertical-align').value) || defaultVerticalAlign,
     });
