@@ -64,10 +64,6 @@ export const containerWidth = option => {
   }
 }
 
-export const displayType = option => ({
-  display: option
-})
-
 export const alignVertical = option => ({
   verticalAlign: option
 })
