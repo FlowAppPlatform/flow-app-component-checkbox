@@ -9,7 +9,6 @@ import {
   alignContainer,
   alignVertical,
   containerWidth,
-  displayType
 } from './style';
 
 class CheckboxComponent extends AppComponent {
